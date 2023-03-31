@@ -402,18 +402,21 @@ public class Server extends Thread {
         System.out.println("\n Terminating server " + serverThreadId.toLowerCase() + " - Running time " + (serverEndTime - serverStartTime) + " milliseconds");
 
 
-        if (getServerThreadId().equals("Thread1")) {
-            setServerThreadRunningStatus1("terminated");
-        } else if (getServerThreadId().equals("Thread2")) {
-            setServerThreadRunningStatus2("terminated");
-        } else if (getServerThreadId().equals("Thread3")) {
-            setServerThreadRunningStatus3("terminated");
+        switch (getServerThreadId()) {
+            case "Thread1":
+                setServerThreadRunningStatus1("terminated");
+                break;
+            case "Thread2":
+                setServerThreadRunningStatus2("terminated");
+                break;
+            case "Thread3":
+                setServerThreadRunningStatus3("terminated");
+                break;
         }
         while (true) {
             if ((getServerThreadRunningStatus1().equals("terminated")) && (getServerThreadRunningStatus2().equals("terminated")) && (getServerThreadRunningStatus3().equals("terminated"))) {
                 Network.disconnect(Network.getServerIP());
-            } else {
-                Thread.yield();
+                System.exit(1); //break;
             }
         }
     }
