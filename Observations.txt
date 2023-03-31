@@ -4,10 +4,10 @@ A. Test Results
 
 1. Unsynchronized (2 server thread)
 
- Terminating client sending thread -  Running time 468 milliseconds
- Terminating client receiving thread - Running time 568 milliseconds
- Terminating server thread1 - Running time 593 milliseconds
- Terminating server thread2 - Running time 574 milliseconds
+ Terminating client sending thread -  Running time      468 milliseconds
+ Terminating client receiving thread - Running time     568 milliseconds
+ Terminating server thread1 - Running time              593 milliseconds
+ Terminating server thread2 - Running time              574 milliseconds
  Terminating network thread - Client disconnected Server disconnected
 
 2. Synchronized (2 server threads)
