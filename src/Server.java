@@ -310,6 +310,7 @@ public class Server extends Thread {
     public double deposit(int i, double amount) {
         double curBalance;      /* Current account balance */
 
+        //changed
         synchronized (account[i]) {
             curBalance = account[i].getBalance();          /* Get current account balance */
 
@@ -339,6 +340,7 @@ public class Server extends Thread {
     public double withdraw(int i, double amount) {
         double curBalance;      /* Current account balance */
 
+        //changed
         synchronized (account[i]) {
             curBalance = account[i].getBalance();          /* Get current account balance */
 
@@ -394,16 +396,17 @@ public class Server extends Thread {
 
         System.out.println("\n Terminating server " + serverThreadId.toLowerCase() + " - Running time " + (serverEndTime - serverStartTime) + " milliseconds");
 
+        //changed
         if (getServerThreadId().equals("Thread1")) {
             setServerThreadRunningStatus1("terminated");
         }
         if (getServerThreadId().equals("Thread2")) {
             setServerThreadRunningStatus2("terminated");
         }
-        if (getServerThreadId().equals("Thread3")) {
-            setServerThreadRunningStatus3("terminated");
-        }
-        if ((getServerThreadRunningStatus1().equals("terminated")) && (getServerThreadRunningStatus2().equals("terminated")) && (getServerThreadRunningStatus3().equals("terminated"))) {
+//        if (getServerThreadId().equals("Thread3")) {
+//            setServerThreadRunningStatus3("terminated");
+//        }
+        if ((getServerThreadRunningStatus1().equals("terminated")) && (getServerThreadRunningStatus2().equals("terminated"))) {
             Network.disconnect(Network.getServerIP());
         }
     }

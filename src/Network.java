@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 
-import java.util.concurrent.Semaphore;
-
 /**
  * Network class
  *
@@ -24,12 +22,12 @@ public class Network extends Thread {
     private static Transactions outGoingPacket[];              /* Outgoing network buffer */
     private static String inBufferStatus, outBufferStatus;     /* Current status of the network buffers - normal, full, empty */
     private static String networkStatus;
-    private static Semaphore outEmpty;
-    private static Semaphore outFull;
-    private static Semaphore inEmpty;
-    private static Semaphore inFull;
-    private static Semaphore mutexOut;
-    private static Semaphore mutexIn;
+//    private static Semaphore outEmpty;
+//    private static Semaphore outFull;
+//    private static Semaphore inEmpty;
+//    private static Semaphore inFull;
+//    private static Semaphore mutexOut;
+//    private static Semaphore mutexIn;
 
     /**
      * Constructor of the Network class
@@ -61,12 +59,12 @@ public class Network extends Thread {
         outputIndexClient = 0;
         networkStatus = "active";
 
-        outEmpty = new Semaphore(maxNbPackets);
-        outFull = new Semaphore(0);
-        inEmpty = new Semaphore(maxNbPackets);
-        inFull = new Semaphore(0);
-        mutexOut = new Semaphore(1);
-        mutexIn = new Semaphore(1);
+//        outEmpty = new Semaphore(maxNbPackets);
+//        outFull = new Semaphore(0);
+//        inEmpty = new Semaphore(maxNbPackets);
+//        inFull = new Semaphore(0);
+//        mutexOut = new Semaphore(1);
+//        mutexIn = new Semaphore(1);
     }
 
     /**
@@ -336,13 +334,13 @@ public class Network extends Thread {
      * @return
      */
     public static boolean send(Transactions inPacket) {
-        try {
-            inEmpty.acquire();
-            mutexIn.acquire();
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            inEmpty.acquire();
+//            mutexIn.acquire();
+//
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
         inComingPacket[inputIndexClient].setAccountNumber(inPacket.getAccountNumber());
         inComingPacket[inputIndexClient].setOperationType(inPacket.getOperationType());
@@ -365,8 +363,8 @@ public class Network extends Thread {
             setInBufferStatus("normal");
         }
         // */
-        mutexIn.release();
-        inFull.release();
+//        mutexIn.release();
+//        inFull.release();
 
         return true;
     }
@@ -378,13 +376,13 @@ public class Network extends Thread {
      * @return
      */
     public static boolean receive(Transactions outPacket) {
-        try {
-            outFull.acquire();
-            mutexOut.acquire();
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            outFull.acquire();
+//            mutexOut.acquire();
+//
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
         outPacket.setAccountNumber(outGoingPacket[outputIndexClient].getAccountNumber());
         outPacket.setOperationType(outGoingPacket[outputIndexClient].getOperationType());
@@ -406,8 +404,8 @@ public class Network extends Thread {
             setOutBufferStatus("normal");
         }
         // */
-        mutexOut.release();
-        outEmpty.release();
+//        mutexOut.release();
+//        outEmpty.release();
         return true;
     }
 
@@ -419,12 +417,12 @@ public class Network extends Thread {
      */
     public static boolean transferOut(Transactions outPacket) {
 
-        try {
-            outEmpty.acquire();
-            mutexOut.acquire();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            outEmpty.acquire();
+//            mutexOut.acquire();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         outGoingPacket[inputIndexServer].setAccountNumber(outPacket.getAccountNumber());
         outGoingPacket[inputIndexServer].setOperationType(outPacket.getOperationType());
         outGoingPacket[inputIndexServer].setTransactionAmount(outPacket.getTransactionAmount());
@@ -444,8 +442,8 @@ public class Network extends Thread {
             setOutBufferStatus("normal");
         }
         // */
-        mutexOut.release();
-        outFull.release();
+//        mutexOut.release();
+//        outFull.release();
         return true;
     }
 
@@ -457,12 +455,12 @@ public class Network extends Thread {
      */
     public static boolean transferIn(Transactions inPacket) {
 
-        try {
-            inFull.acquire();
-            mutexIn.acquire();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            inFull.acquire();
+//            mutexIn.acquire();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         inPacket.setAccountNumber(inComingPacket[outputIndexServer].getAccountNumber());
         inPacket.setOperationType(inComingPacket[outputIndexServer].getOperationType());
         inPacket.setTransactionAmount(inComingPacket[outputIndexServer].getTransactionAmount());
@@ -483,8 +481,8 @@ public class Network extends Thread {
             setInBufferStatus("normal");
         }
         // */
-        mutexIn.release();
-        inEmpty.release();
+//        mutexIn.release();
+//        inEmpty.release();
         return true;
     }
 
