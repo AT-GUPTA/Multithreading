@@ -1,0 +1,63 @@
+A. Test Results
+
+* All running times are recorded in milliseconds.
+
+1. Unsynchronized (2 server thread)
+
+ Terminating client sending thread -  Running time 468 milliseconds
+ Terminating client receiving thread - Running time 568 milliseconds
+ Terminating server thread1 - Running time 593 milliseconds
+ Terminating server thread2 - Running time 574 milliseconds
+ Terminating network thread - Client disconnected Server disconnected
+
+2. Synchronized (2 server threads)
+                                                                        RUN 1           RUN 2           RUN 3       AVG
+
+ Terminating client sending thread -  Running time                      448             445             450         448
+ Terminating client receiving thread - Running time                     558             557             558         558
+ Terminating server thread1 - Running time                              572             588             593         584
+ Terminating server thread2 - Running time                              572             588             593         584
+ Terminating network thread - Client disconnected Server disconnected
+
+3. Semaphores (2 server threads)
+                                                                        RUN 1           RUN 2           RUN 3       AVG
+
+ Terminating client sending thread -  Running time                      449             444             435         442
+ Terminating client receiving thread - Running time                     562             552             544         553
+ Terminating server thread1 - Running time                              581             575             558         571
+ Terminating server thread2 - Running time                              582             575             558         571
+ Terminating network thread - Client disconnected Server disconnected
+
+4. Semaphores (3 server threads)
+                                                                        RUN 1           RUN 2           RUN 3       AVG
+
+ Terminating client sending thread -  Running time                      328             353             338         340
+ Terminating client receiving thread - Running time                     434             467             447         449
+ Terminating server thread1 - Running time                              454             485             466         468
+ Terminating server thread2 - Running time                              454             485             451         463
+ Terminating server thread3 - Running time                              454             484             451         463
+ Terminating network thread - Client disconnected Server disconnected
+
+ B. Explanation
+
+Synchronization:
+In the Server class, I have used synchronized statements for the deposit, withdraw, and query methods.
+Synchronized statement/block is used to ensure that only one thread can access the critical section of the code at any given time.
+Using synchronized statements allows for more fine-grained control over which blocks of code need synchronization, whereas synchronized methods
+apply the lock to the entire method, which can be less efficient if only a portion of the method needs to be synchronized, as in this case, only
+the shared variables (account[]) needed to be in sync.
+Therefore, I found synchronized statements to be a good choice because I only needed to synchronize the specific block of code that accesses the
+shared resource, which is the account balance in this case.
+
+Running Times:
+Difference between #2 and #4: Major difference, #4 being faster:
+-Increased number of threads have reduced the running times as there are more threads competing for access to the buffer while the access to
+shared buffers is being synchronously acquired and released, and does not depend upon the busy waiting alternative of thread implementation.
+
+Difference between #2 and #3: No major difference.
+-Busy waiting (case 2) has good thread performance but poor cpu cycle performance than use of semaphores (case 3). Overall, the average running time
+might not produce considerable difference given the implementation factors, computational resources, and data size.
+-The number of threads accessing the buffer is relatively small in both cases 2 and 3, thus the difference in running
+times is not be significant, as there are fewer threads competing for access to the buffer.
+-- In general, the semaphore implementation is more efficient.
+
